@@ -12,7 +12,7 @@ import { getNetwork } from '@ethersproject/networks';
 import { getDefaultProvider } from '@ethersproject/providers';
 import IPancakePair from '@pancakeswap-libs/pancake-swap-core/build/IPancakePair.json';
 
-var _FACTORY_ADDRESS, _INIT_CODE_HASH, _SOLIDITY_TYPE_MAXIMA;
+var _FACTORY_ADDRESS, _INIT_CODE_HASH, _FEES_NUMERATOR, _SOLIDITY_TYPE_MAXIMA;
 var ChainId;
 
 (function (ChainId) {
@@ -64,8 +64,8 @@ var Rounding;
   Rounding[Rounding["ROUND_UP"] = 2] = "ROUND_UP";
 })(Rounding || (Rounding = {}));
 
-var FACTORY_ADDRESS = (_FACTORY_ADDRESS = {}, _FACTORY_ADDRESS[ChainId.KAI] = '0x64203f29f4d6a7e199b6f6afbe65f1fa914c7c4e', _FACTORY_ADDRESS[ChainId.BSC_TESTNET] = '0xcc9944882df76302e06B1DC2dd62066e2e0Ef10F', _FACTORY_ADDRESS[ChainId.BSC] = '0xcc9944882df76302e06B1DC2dd62066e2e0Ef10F', _FACTORY_ADDRESS[ChainId.ONUS] = '0xf57578DD26422e80ab4051165Fb64DA1F25E740A', _FACTORY_ADDRESS[ChainId.ONUS_TESTNET] = '0xa0f52954e69c4f6c10091BdAD8e674179eD58149', _FACTORY_ADDRESS);
-var INIT_CODE_HASH = (_INIT_CODE_HASH = {}, _INIT_CODE_HASH[ChainId.KAI] = '0x4829a2cb5b5cd2280b139796d23e1bea43f7caddf4203454607c5a9f3d9f95b6', _INIT_CODE_HASH[ChainId.BSC_TESTNET] = '0x5ca9aae9c919af7433454981db460759a69c442c68bc9c359a733c7e4d260f34', _INIT_CODE_HASH[ChainId.ONUS] = '0x8fd0691ee48e1b260e31c79ef938b4d7f6d2598391df758d51c03963db2e7c4e', _INIT_CODE_HASH[ChainId.ONUS_TESTNET] = '0x1b28b2849bc5c4717a234547632d291b7d118f7da395fc8c2b7ced6eb8c41b9c', _INIT_CODE_HASH);
+var FACTORY_ADDRESS = (_FACTORY_ADDRESS = {}, _FACTORY_ADDRESS[ChainId.KAI] = '0x64203f29f4d6a7e199b6f6afbe65f1fa914c7c4e', _FACTORY_ADDRESS[ChainId.BSC_TESTNET] = '0xcc9944882df76302e06B1DC2dd62066e2e0Ef10F', _FACTORY_ADDRESS[ChainId.BSC] = '0xcc9944882df76302e06B1DC2dd62066e2e0Ef10F', _FACTORY_ADDRESS[ChainId.ONUS] = '0xA5DA4dC244c7aD33a0D8a10Ed5d8cFf078E86Ef3', _FACTORY_ADDRESS[ChainId.ONUS_TESTNET] = '0xa0f52954e69c4f6c10091BdAD8e674179eD58149', _FACTORY_ADDRESS);
+var INIT_CODE_HASH = (_INIT_CODE_HASH = {}, _INIT_CODE_HASH[ChainId.KAI] = '0x4829a2cb5b5cd2280b139796d23e1bea43f7caddf4203454607c5a9f3d9f95b6', _INIT_CODE_HASH[ChainId.BSC_TESTNET] = '0x5ca9aae9c919af7433454981db460759a69c442c68bc9c359a733c7e4d260f34', _INIT_CODE_HASH[ChainId.ONUS] = '0x5393060e4ffa74ba02e5aaed6c5ccdba4186aa7759b8cf1fa32810a204843ac4', _INIT_CODE_HASH[ChainId.ONUS_TESTNET] = '0x1b28b2849bc5c4717a234547632d291b7d118f7da395fc8c2b7ced6eb8c41b9c', _INIT_CODE_HASH);
 var MINIMUM_LIQUIDITY = /*#__PURE__*/JSBI.BigInt(1000); // exports for internal consumption
 
 var ZERO = /*#__PURE__*/JSBI.BigInt(0);
@@ -75,7 +75,7 @@ var THREE = /*#__PURE__*/JSBI.BigInt(3);
 var FIVE = /*#__PURE__*/JSBI.BigInt(5);
 var TEN = /*#__PURE__*/JSBI.BigInt(10);
 var _100 = /*#__PURE__*/JSBI.BigInt(100);
-var FEES_NUMERATOR = /*#__PURE__*/JSBI.BigInt(9975);
+var FEES_NUMERATOR = (_FEES_NUMERATOR = {}, _FEES_NUMERATOR[ChainId.KAI] = /*#__PURE__*/JSBI.BigInt(9975), _FEES_NUMERATOR[ChainId.BSC_TESTNET] = /*#__PURE__*/JSBI.BigInt(9970), _FEES_NUMERATOR);
 var FEES_DENOMINATOR = /*#__PURE__*/JSBI.BigInt(10000);
 var SolidityType;
 
@@ -872,7 +872,7 @@ var Pair = /*#__PURE__*/function () {
 
     var inputReserve = this.reserveOf(inputAmount.token);
     var outputReserve = this.reserveOf(inputAmount.token.equals(this.token0) ? this.token1 : this.token0);
-    var inputAmountWithFee = JSBI.multiply(inputAmount.raw, FEES_NUMERATOR);
+    var inputAmountWithFee = JSBI.multiply(inputAmount.raw, FEES_NUMERATOR[this.chainId]);
     var numerator = JSBI.multiply(inputAmountWithFee, outputReserve.raw);
     var denominator = JSBI.add(JSBI.multiply(inputReserve.raw, FEES_DENOMINATOR), inputAmountWithFee);
     var outputAmount = new TokenAmount(inputAmount.token.equals(this.token0) ? this.token1 : this.token0, JSBI.divide(numerator, denominator));
@@ -894,7 +894,7 @@ var Pair = /*#__PURE__*/function () {
     var outputReserve = this.reserveOf(outputAmount.token);
     var inputReserve = this.reserveOf(outputAmount.token.equals(this.token0) ? this.token1 : this.token0);
     var numerator = JSBI.multiply(JSBI.multiply(inputReserve.raw, outputAmount.raw), FEES_DENOMINATOR);
-    var denominator = JSBI.multiply(JSBI.subtract(outputReserve.raw, outputAmount.raw), FEES_NUMERATOR);
+    var denominator = JSBI.multiply(JSBI.subtract(outputReserve.raw, outputAmount.raw), FEES_NUMERATOR[this.chainId]);
     var inputAmount = new TokenAmount(outputAmount.token.equals(this.token0) ? this.token1 : this.token0, JSBI.add(JSBI.divide(numerator, denominator), ONE));
     return [inputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))];
   };

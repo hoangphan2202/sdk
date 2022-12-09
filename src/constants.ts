@@ -60,7 +60,7 @@ export const FACTORY_ADDRESS: { [chainId: number]: string } = {
 export const INIT_CODE_HASH: { [chainId: number]: string } = {
   [ChainId.KAI]: '0x4829a2cb5b5cd2280b139796d23e1bea43f7caddf4203454607c5a9f3d9f95b6',
   [ChainId.BSC_TESTNET]: '0x5ca9aae9c919af7433454981db460759a69c442c68bc9c359a733c7e4d260f34',
-  [ChainId.ONUS]: '0x8fd0691ee48e1b260e31c79ef938b4d7f6d2598391df758d51c03963db2e7c4e',
+  [ChainId.ONUS]: '0x5393060e4ffa74ba02e5aaed6c5ccdba4186aa7759b8cf1fa32810a204843ac4',
   [ChainId.ONUS_TESTNET]: '0x1b28b2849bc5c4717a234547632d291b7d118f7da395fc8c2b7ced6eb8c41b9c',
 }
 
