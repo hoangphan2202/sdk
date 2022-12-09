@@ -62,7 +62,7 @@ export const INIT_CODE_HASH: { [chainId: number]: string } = {
   [ChainId.BSC_TESTNET]: '0x5ca9aae9c919af7433454981db460759a69c442c68bc9c359a733c7e4d260f34',
   [ChainId.ONUS]: '0x8fd0691ee48e1b260e31c79ef938b4d7f6d2598391df758d51c03963db2e7c4e',
   [ChainId.ONUS_TESTNET]: '0x1b28b2849bc5c4717a234547632d291b7d118f7da395fc8c2b7ced6eb8c41b9c',
-}yarn dev
+}
 
 export const MINIMUM_LIQUIDITY = JSBI.BigInt(1000)
 
